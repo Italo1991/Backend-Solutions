@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -5,6 +6,7 @@ namespace Italo.Customer.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
@@ -21,7 +23,7 @@ namespace Italo.Customer.Api.Controllers
         /// Testing my remarks <br/> <br/>
         ///     Example: http://
         /// </remarks>
-        /// <param name="id">Identifier of item</param>
+        /// <param name="id" example="123">Identifier of item</param>
         /// <returns>List of forecast</returns>
         /// <response code="200">List of forecast</response>
         /// <response code="500">Error to return</response>
