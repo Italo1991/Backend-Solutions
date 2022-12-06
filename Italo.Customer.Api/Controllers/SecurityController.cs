@@ -16,30 +16,29 @@ namespace Italo.Customer.Api.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly IOptions<SecuritySetting> _options;
-        public SecurityController(IOptions<SecuritySetting> options)
+        private readonly ILogger<SecurityController> _logger;
+
+        public SecurityController(IOptions<SecuritySetting> options, ILogger<SecurityController> logger)
         {
             _options = options;
+            _logger = logger;
         }
 
         /// <summary>
-        /// Endpoint to generate token
+        /// Generate token
         /// </summary>
-        /// <remarks>
-        /// Testing my remarks <br/> <br/>
-        ///     Example: http://
-        /// </remarks>
         /// <param name="userModel">Username and Password</param>
         /// <returns>Token JWT</returns>
         /// <response code="200">Token JWT</response>
         /// <response code="500">Error to generate token</response>
+        [HttpPost("generateToken")]
+        [Produces("application/text")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-        [Produces("application/json")]
-        [HttpPost("generateToken")]
         [AllowAnonymous]
         public ActionResult GenerateToken(UserModel userModel)
         {
-            if (userModel.UserName == "string" && userModel.Password == "string")
+            if (userModel.UserName == "admin" && userModel.Password == "admin")
             {
                 var issuer = _options.Value.Issuer;
                 var audience = _options.Value.Audience;

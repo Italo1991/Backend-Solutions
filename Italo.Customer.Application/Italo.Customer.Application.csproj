@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Italo.Customer.Domain\Italo.Customer.Domain.csproj" />
+    <ProjectReference Include="..\Italo.Customer.Persistence\Italo.Customer.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
