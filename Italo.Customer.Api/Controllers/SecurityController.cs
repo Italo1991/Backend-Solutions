@@ -16,12 +16,10 @@ namespace Italo.Customer.Api.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly IOptions<SecuritySetting> _options;
-        private readonly ILogger<SecurityController> _logger;
 
-        public SecurityController(IOptions<SecuritySetting> options, ILogger<SecurityController> logger)
+        public SecurityController(IOptions<SecuritySetting> options)
         {
             _options = options;
-            _logger = logger;
         }
 
         /// <summary>
@@ -32,7 +30,7 @@ namespace Italo.Customer.Api.Controllers
         /// <response code="200">Token JWT</response>
         /// <response code="500">Error to generate token</response>
         [HttpPost("generateToken")]
-        [Produces("application/text")]
+        [Produces("application/json")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [AllowAnonymous]
@@ -51,8 +49,7 @@ namespace Italo.Customer.Api.Controllers
                         new Claim("Id", Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Sub, userModel.UserName),
                         new Claim(JwtRegisteredClaimNames.Email, userModel.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti,
-                        Guid.NewGuid().ToString())
+                        new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
                     }),
                     Expires = DateTime.UtcNow.AddMinutes(5),
                     Issuer = issuer,
