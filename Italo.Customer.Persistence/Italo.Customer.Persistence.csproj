@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Italo.Customer.Domain\Italo.Customer.Domain.csproj" />
+    <ProjectReference Include="..\Italo.Customer.Infrastructure\Italo.Customer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

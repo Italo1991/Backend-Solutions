@@ -13,6 +13,7 @@ builder.AddLogExtensions();
 builder.AddSwagger();
 builder.AddApplicationServices();
 builder.AddRepositories();
+builder.AddInfrastructure();
 
 var app = builder.Build();
 

@@ -1,19 +1,24 @@
 ﻿using Italo.Customer.Domain.Entities;
+using Italo.Customer.Infrastructure.Interfaces;
 using Italo.Customer.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Italo.Customer.Persistence
 {
     public class CustomerContext : DbContext
     {
-        public CustomerContext(DbContextOptions<CustomerContext> options) : base(options)
-        {
+        private readonly IUserContext _userContext;
 
+        public CustomerContext(DbContextOptions<CustomerContext> options,
+            IUserContext userContext) : base(options)
+        {
+            _userContext = userContext;
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var userName = _userContext.GetUserNameByToken();
+
             var statesToFilter = new List<EntityState>() { EntityState.Modified, EntityState.Added };
             var entries = base.ChangeTracker.Entries().Where(p => statesToFilter.Contains(p.State));
             foreach (var entry in entries)
@@ -21,9 +26,13 @@ namespace Italo.Customer.Persistence
                 if (entry.State == EntityState.Modified)
                 {
                     ((EntityBase)entry.Entity).ModificationDate = DateTime.Now;
+                    ((EntityBase)entry.Entity).ModifiedBy = userName;
                 }
                 else if (entry.State == EntityState.Added)
+                {
                     ((EntityBase)entry.Entity).CreationDate = DateTime.Now;
+                    ((EntityBase)entry.Entity).CreatedBy = userName;
+                }
             }
             return base.SaveChangesAsync(cancellationToken);
         }

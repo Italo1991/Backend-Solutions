@@ -7,7 +7,7 @@ namespace Italo.Customer.Api.Extensions
     {
         public static void AddRepositories(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
         }
     }
 }

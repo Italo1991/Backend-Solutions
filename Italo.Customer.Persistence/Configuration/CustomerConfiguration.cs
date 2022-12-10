@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Italo.Customer.Persistence.Configuration
 {
-    public class CustomerConfiguration : IEntityTypeConfiguration<CustomerEntity>
+    public class CustomerConfiguration : BaseEntityConfiguration<CustomerEntity>
     {
-        public void Configure(EntityTypeBuilder<CustomerEntity> builder)
+        public override void Configure(EntityTypeBuilder<CustomerEntity> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("customer");
 
             builder.HasKey(p => p.Id)
@@ -28,13 +30,6 @@ namespace Italo.Customer.Persistence.Configuration
             builder.Property(p => p.CustomerType)
                 .HasColumnName("customer_type")
                 .HasColumnType("tinyint")
-                .IsRequired();
-
-            builder.Property(p => p.ModificationDate)
-                .HasColumnName("modification_date");
-
-            builder.Property(p => p.CreationDate)
-                .HasColumnName("creation_date")
                 .IsRequired();
         }
     }
