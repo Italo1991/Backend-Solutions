@@ -89,10 +89,8 @@ namespace Italo.Customer.Api.Controllers
             if (!exists) return NotFound();
 
             var customerEntity = _mapper.Map<CustomerEntity>(customerModifyRequest);
-            var success = await _customerAppService.ModifyAsync(id, customerEntity);
-            if (success) return Ok();
-
-            return BadRequest();
+            _customerAppService.Modify(id, customerEntity);
+            return Ok();
         }
 
         /// <summary>
@@ -113,10 +111,8 @@ namespace Italo.Customer.Api.Controllers
             var customer = await _customerAppService.GetByIdAsync(id);
             if (customer == null) return NotFound();
             
-            var success = await _customerAppService.DeleteAsync(customer);
-            if (success) return Ok();
-
-            return BadRequest();
+            _customerAppService.Delete(customer);
+            return Ok();
         }
     }
 }

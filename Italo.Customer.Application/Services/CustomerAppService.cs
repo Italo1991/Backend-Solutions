@@ -6,33 +6,38 @@ namespace Italo.Customer.Application.Services
 {
     public class CustomerAppService : ICustomerAppService
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomerAppService(ICustomerRepository customerRepository)
+        public CustomerAppService(IUnitOfWork unitOfWork)
         {
-            _customerRepository = customerRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> AddAsync(CustomerEntity customer)
         {
             customer.ValidateAndThrow();
-            return await _customerRepository.AddAsync(customer) >= 1;
+            await _unitOfWork.CustomerRepository.AddAsync(customer);
+            _unitOfWork.Commit();
+
+            return customer.Id >= 1;
         }
 
-        public async Task<bool> DeleteAsync(CustomerEntity customerEntity) 
-            => await _customerRepository.DeleteAsync(customerEntity);
+        public void Delete(CustomerEntity customerEntity)
+        { 
+            _unitOfWork.CustomerRepository.Delete(customerEntity);
+            _unitOfWork.Commit();
+        }
 
-        public async Task<CustomerEntity?> GetByIdAsync(int id) 
-            => await _customerRepository.GetByIdAsync(id);
+        public async Task<CustomerEntity?> GetByIdAsync(int id) => await _unitOfWork.CustomerRepository.GetByIdAsync(id);
 
-        public async Task<bool> AlreadyExists(int id)
-            => await _customerRepository.AlreadyExistsAsync(id);
+        public async Task<bool> AlreadyExists(int id) => await _unitOfWork.CustomerRepository.AlreadyExistsAsync(id);
 
-        public async Task<bool> ModifyAsync(int id, CustomerEntity customer)
+        public void Modify(int id, CustomerEntity customer)
         {
             customer.Id = id;
             customer.ValidateAndThrow();
-            return await _customerRepository.ModifyAsync(customer);
+            _unitOfWork.CustomerRepository.Modify(customer);
+            _unitOfWork.Commit();
         }
     }
 }

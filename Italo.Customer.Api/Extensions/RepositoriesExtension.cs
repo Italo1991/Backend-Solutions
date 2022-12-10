@@ -1,4 +1,5 @@
 ﻿using Italo.Customer.Domain.Interfaces.Repositories;
+using Italo.Customer.Persistence;
 using Italo.Customer.Persistence.Repositories;
 
 namespace Italo.Customer.Api.Extensions
@@ -8,6 +9,7 @@ namespace Italo.Customer.Api.Extensions
         public static void AddRepositories(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

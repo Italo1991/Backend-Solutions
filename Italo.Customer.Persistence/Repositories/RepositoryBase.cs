@@ -12,19 +12,9 @@ namespace Italo.Customer.Persistence.Repositories
             _customerContext = customerContext;
         }
 
-        public async Task<int> AddAsync(T entity)
-        {
-            _customerContext.Add(entity);
-            await _customerContext.SaveChangesAsync();
-            return entity.Id;
-        }
+        public async Task AddAsync(T entity) => await _customerContext.AddAsync(entity);
 
-        public async Task<bool> DeleteAsync(T entity)
-        {
-            _customerContext.Remove(entity);
-            await _customerContext.SaveChangesAsync();
-            return true;
-        }
+        public void Delete(T entity) => _customerContext.Remove(entity);
 
         public async Task<T?> GetByIdAsync(int id)
             => await _customerContext
@@ -39,11 +29,6 @@ namespace Italo.Customer.Persistence.Repositories
                     .AsNoTracking()
                     .FirstOrDefaultAsync() != null;
 
-        public async Task<bool> ModifyAsync(T entity)
-        {
-            _customerContext.Update(entity);
-            await _customerContext.SaveChangesAsync();
-            return true;
-        }
+        public void Modify(T entity) => _customerContext.Update(entity);
     }
 }

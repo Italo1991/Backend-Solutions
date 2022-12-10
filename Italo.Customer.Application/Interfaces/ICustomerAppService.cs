@@ -6,8 +6,8 @@ namespace Italo.Customer.Application.Interfaces
     {
         Task<CustomerEntity?> GetByIdAsync(int id);
         Task<bool> AddAsync(CustomerEntity customer);
-        Task<bool> ModifyAsync(int id, CustomerEntity customer);
-        Task<bool> DeleteAsync(CustomerEntity customerEntity);
+        void Modify(int id, CustomerEntity customer);
+        void Delete(CustomerEntity customerEntity);
         Task<bool> AlreadyExists(int id);
     }
 }

@@ -9,13 +9,15 @@ namespace Italo.Customer.Persistence
     {
         private readonly IUserContext _userContext;
 
+        public DbSet<CustomerEntity> CustomerEntities { get; set; }
+
         public CustomerContext(DbContextOptions<CustomerContext> options,
             IUserContext userContext) : base(options)
         {
             _userContext = userContext;
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override int SaveChanges()
         {
             var userName = _userContext.GetUserNameByToken();
 
@@ -34,7 +36,7 @@ namespace Italo.Customer.Persistence
                     ((EntityBase)entry.Entity).CreatedBy = userName;
                 }
             }
-            return base.SaveChangesAsync(cancellationToken);
+            return base.SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

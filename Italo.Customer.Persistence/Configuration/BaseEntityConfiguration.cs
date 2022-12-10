@@ -16,10 +16,12 @@ namespace Italo.Customer.Persistence.Configuration
                 .IsRequired();
 
             builder.Property(p => p.ModifiedBy)
-                .HasColumnName("modified_by");
+                .HasColumnName("modified_by")
+                .HasMaxLength(100);
 
             builder.Property(p => p.CreatedBy)
                 .HasColumnName("created_by")
+                .HasMaxLength(100)
                 .IsRequired();
         }
     }
