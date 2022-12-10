@@ -12,13 +12,6 @@ namespace Italo.Customer.Persistence.Configuration
 
             builder.ToTable("customer");
 
-            builder.HasKey(p => p.Id)
-                .HasName("id");
-
-            builder.Property(p => p.Id)
-                .HasColumnName("id")
-                .IsRequired();
-
             builder.Property(p => p.Name)
                 .HasColumnName("name")
                 .HasMaxLength(100);
