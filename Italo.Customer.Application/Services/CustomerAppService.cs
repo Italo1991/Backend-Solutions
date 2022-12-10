@@ -16,7 +16,6 @@ namespace Italo.Customer.Application.Services
         public async Task<bool> AddAsync(CustomerEntity customer)
         {
             customer.ValidateAndThrow();
-            customer.CreationDate = DateTime.Now;
             return await _customerRepository.AddAsync(customer) >= 1;
         }
 
@@ -32,7 +31,6 @@ namespace Italo.Customer.Application.Services
         public async Task<bool> ModifyAsync(int id, CustomerEntity customer)
         {
             customer.Id = id;
-            customer.ModificationDate = DateTime.Now;
             customer.ValidateAndThrow();
             return await _customerRepository.ModifyAsync(customer);
         }
