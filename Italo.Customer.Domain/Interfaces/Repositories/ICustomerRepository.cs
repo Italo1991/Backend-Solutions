@@ -2,8 +2,8 @@
 
 namespace Italo.Customer.Domain.Interfaces.Repositories
 {
-    public interface ICustomerRepository
+    public interface ICustomerRepository : IRepositoryBase<CustomerEntity>
     {
-        Task<CustomerEntity?> GetByIdAsync(int id);
+        
     }
 }

@@ -20,6 +20,22 @@ namespace Italo.Customer.Persistence.Configuration
             builder.Property(p => p.Name)
                 .HasColumnName("name")
                 .HasMaxLength(100);
+
+            builder.Property(p => p.Birthdate)
+                .HasColumnName("birthdate")
+                .IsRequired();
+
+            builder.Property(p => p.CustomerType)
+                .HasColumnName("customer_type")
+                .HasColumnType("tinyint")
+                .IsRequired();
+
+            builder.Property(p => p.ModificationDate)
+                .HasColumnName("modification_date");
+
+            builder.Property(p => p.CreationDate)
+                .HasColumnName("creation_date")
+                .IsRequired();
         }
     }
 }

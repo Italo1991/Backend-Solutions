@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Italo.Customer.Api.Requests;
 using Italo.Customer.Api.Responses;
 using Italo.Customer.Application.Interfaces;
+using Italo.Customer.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -32,7 +34,7 @@ namespace Italo.Customer.Api.Controllers
         /// <response code="200">Customer</response>
         /// <response code="404">Customer not found</response>
         /// <response code="500">Error to get by id</response>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -44,6 +46,77 @@ namespace Italo.Customer.Api.Controllers
 
             var customerResponse = _mapper.Map<CustomerResponse>(customer);
             return Ok(customerResponse);
+        }
+
+
+        /// <summary>
+        /// Endpoint to add customer
+        /// </summary>
+        /// <param name="customerRequest"></param>
+        /// <returns>boolean</returns>
+        /// <response code="200">boolean</response>
+        /// <response code="400">Customer is invalid</response> 
+        [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> AddAsync([FromBody] CustomerAddRequest customerRequest)
+        {
+            var customerEntity = _mapper.Map<CustomerEntity>(customerRequest);
+            var success = await _customerAppService.AddAsync(customerEntity);
+            if (success) return Ok();
+
+            return BadRequest();
+        }
+
+        /// <summary>
+        /// Endpoint to modify customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="customerModifyRequest"></param>
+        /// <returns>boolean</returns>
+        /// <response code="200">boolean</response>
+        /// <response code="404">Customer not found</response>
+        /// <response code="400">Customer is invalid</response>
+        [HttpPut("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult> ModifyAsync([FromRoute] int id, [FromBody] CustomerModifyRequest customerModifyRequest)
+        {
+            var exists = await _customerAppService.AlreadyExists(id);
+            if (!exists) return NotFound();
+
+            var customerEntity = _mapper.Map<CustomerEntity>(customerModifyRequest);
+            var success = await _customerAppService.ModifyAsync(id, customerEntity);
+            if (success) return Ok();
+
+            return BadRequest();
+        }
+
+        /// <summary>
+        /// Endpoint to delete customer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>boolean</returns>
+        /// <response code="200">boolean</response>
+        /// <response code="404">Customer not exists</response>
+        /// <response code="500">Error to delete</response>
+        [HttpDelete("{id:int}")]
+        [Produces("application/json")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult> DeleteAsync([FromRoute] int id)
+        {
+            var customer = await _customerAppService.GetByIdAsync(id);
+            if (customer == null) return NotFound();
+            
+            var success = await _customerAppService.DeleteAsync(customer);
+            if (success) return Ok();
+
+            return BadRequest();
         }
     }
 }
