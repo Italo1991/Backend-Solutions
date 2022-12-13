@@ -17,19 +17,19 @@ parameters:
   values:
   - windows-latest
   - ubuntu-latest
-  - macOS-latest
 
 jobs:
-- job: BuildLinux
+- job: Build
   continueOnError: false
   timeoutInMinutes: 5
   pool:
     vmImage: ${{ parameters.vmImage }}
   steps:
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-  
-  - script: dotnet restore --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
+    displayName: 'Pool-VmImage'
+
+  - script: dotnet restore
+    displayName: 'dotnet restore'
 
   - script: dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
