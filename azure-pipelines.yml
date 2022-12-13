@@ -8,17 +8,26 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  vmImage: 
-  - 'ubuntu-latest'
-  - 'windows-latest'
+
+parameters:
+- name: vmImage
+  displayName: Pool Image
+  type: string
+  default: ubuntu-latest
+  values:
+  - windows-latest
+  - ubuntu-latest
+  - macOS-latest
 
 jobs:
 - job: BuildLinux
   continueOnError: false
   timeoutInMinutes: 5
   pool:
-    vmImage: $(vmImage)
+    vmImage: ${{ parameters.vmImage }}
   steps:
+  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+  
   - script: dotnet restore --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
 
