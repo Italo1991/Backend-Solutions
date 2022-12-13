@@ -12,9 +12,11 @@ namespace Italo.Customer.Persistence.Repositories
             _customerContext = customerContext;
         }
 
-        public virtual async Task AddAsync(T entity) => await _customerContext.AddAsync(entity);
+        public virtual async Task AddAsync(T entity) 
+            => await _customerContext.AddAsync(entity);
 
-        public virtual void Delete(T entity) => _customerContext.Remove(entity);
+        public virtual void Delete(T entity) 
+            => _customerContext.Remove(entity);
 
         public virtual async Task<T?> GetByIdAsync(int id)
             => await _customerContext
@@ -29,6 +31,7 @@ namespace Italo.Customer.Persistence.Repositories
                     .AsNoTracking()
                     .FirstOrDefaultAsync() != null;
 
-        public virtual void Modify(T entity) => _customerContext.Update(entity);
+        public virtual void Modify(T entity) 
+            => _customerContext.Update(entity);
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Italo.Customer.Persistence.Migrations
 {
     [DbContext(typeof(CustomerContext))]
-    [Migration("20221213111511_Initial")]
+    [Migration("20221213185142_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -98,7 +98,53 @@ namespace Italo.Customer.Persistence.Migrations
                     b.ToTable("address", "corporate");
                 });
 
-            modelBuilder.Entity("Italo.Customer.Domain.Entities.CustomerEntity", b =>
+            modelBuilder.Entity("Italo.Customer.Domain.Entities.Contact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("contact_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("creation_date");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int")
+                        .HasColumnName("customer_id");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("modification_date");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("modified_by");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("phonenumber");
+
+                    b.HasKey("Id")
+                        .HasName("contact_id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("contact", "corporate");
+                });
+
+            modelBuilder.Entity("Italo.Customer.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +198,18 @@ namespace Italo.Customer.Persistence.Migrations
                     b.ToTable("customer", "corporate");
                 });
 
-            modelBuilder.Entity("Italo.Customer.Domain.Entities.CustomerEntity", b =>
+            modelBuilder.Entity("Italo.Customer.Domain.Entities.Contact", b =>
+                {
+                    b.HasOne("Italo.Customer.Domain.Entities.Customer", "Customer")
+                        .WithMany("Contacts")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Italo.Customer.Domain.Entities.Customer", b =>
                 {
                     b.HasOne("Italo.Customer.Domain.Entities.Address", "Address")
                         .WithMany()
@@ -161,6 +218,11 @@ namespace Italo.Customer.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Italo.Customer.Domain.Entities.Customer", b =>
+                {
+                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

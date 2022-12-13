@@ -29,6 +29,18 @@ namespace Italo.Customer.Domain.Validations
 
             RuleFor(p => p.Address)
                 .SetValidator(new AddressValidation());
+
+            RuleFor(p => p.Contacts)
+                .NotNull()
+                .NotEmpty()
+                .Custom((item, context) =>
+                {
+                    if (item.Count <= 0)
+                        context.AddFailure("List can't be zero");
+                });
+
+            RuleForEach(p => p.Contacts)
+                .SetValidator(new ContactValidation());
         }
     }
 }

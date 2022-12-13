@@ -11,6 +11,7 @@ namespace Italo.Customer.Domain.Entities
         public CustomerType CustomerType { get; set; }
         public int AddressId { get; set; }
         public Address Address { get; set; }
+        public List<Contact> Contacts { get; set; }
 
         public override bool Validate() => new CustomerValidation().Validate(this).IsValid;
 

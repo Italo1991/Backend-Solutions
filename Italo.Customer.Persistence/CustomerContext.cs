@@ -11,6 +11,7 @@ namespace Italo.Customer.Persistence
 
         public DbSet<Domain.Entities.Customer> CustomerEntities { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
         public CustomerContext(DbContextOptions<CustomerContext> options,
             IUserContext userContext) : base(options)
@@ -52,6 +53,7 @@ namespace Italo.Customer.Persistence
 
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
             base.OnModelCreating(modelBuilder); 
         }
     }

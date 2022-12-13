@@ -23,7 +23,7 @@ namespace Italo.Customer.Application.Services
         }
 
         public void Delete(Domain.Entities.Customer customerEntity)
-        { 
+        {
             _unitOfWork.CustomerRepository.Delete(customerEntity);
             _unitOfWork.Commit();
         }

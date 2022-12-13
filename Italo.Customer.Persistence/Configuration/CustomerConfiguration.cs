@@ -1,5 +1,4 @@
-﻿using Italo.Customer.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Italo.Customer.Persistence.Configuration

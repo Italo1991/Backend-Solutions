@@ -66,6 +66,38 @@ namespace Italo.Customer.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "contact",
+                schema: "corporate",
+                columns: table => new
+                {
+                    contactid = table.Column<int>(name: "contact_id", type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    phonenumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    customerid = table.Column<int>(name: "customer_id", type: "int", nullable: false),
+                    creationdate = table.Column<DateTime>(name: "creation_date", type: "datetime2", nullable: false),
+                    modificationdate = table.Column<DateTime>(name: "modification_date", type: "datetime2", nullable: true),
+                    createdby = table.Column<string>(name: "created_by", type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    modifiedby = table.Column<string>(name: "modified_by", type: "nvarchar(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("contact_id", x => x.contactid);
+                    table.ForeignKey(
+                        name: "FK_contact_customer_customer_id",
+                        column: x => x.customerid,
+                        principalSchema: "corporate",
+                        principalTable: "customer",
+                        principalColumn: "customer_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_contact_customer_id",
+                schema: "corporate",
+                table: "contact",
+                column: "customer_id");
+
             migrationBuilder.CreateIndex(
                 name: "IX_customer_address_id",
                 schema: "corporate",
@@ -76,6 +108,10 @@ namespace Italo.Customer.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "contact",
+                schema: "corporate");
+
             migrationBuilder.DropTable(
                 name: "customer",
                 schema: "corporate");

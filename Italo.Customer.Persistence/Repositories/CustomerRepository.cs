@@ -13,6 +13,7 @@ namespace Italo.Customer.Persistence.Repositories
                     .Set<Domain.Entities.Customer>()
                     .Where(p => p.Id == id)
                     .Include(p => p.Address)
+                    .Include(p => p.Contacts)
                     .FirstOrDefaultAsync();
     }
 }

@@ -13,5 +13,6 @@ namespace Italo.Customer.Api.Responses
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
         public AddressResponse Address { get; set; }
+        public List<ContactResponse> Contacts { get; set; }
     }
 }
