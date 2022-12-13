@@ -10,9 +10,12 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: build
+- job: Build
+  continueOnError: false
+  timeoutInMinutes: 5
   pool:
     vmImage: ubuntu-latest
+  environment: DEV
   steps:
   - script: dotnet build --configuration $(buildConfiguration)
     displayName: 'dotnet build $(buildConfiguration)'
