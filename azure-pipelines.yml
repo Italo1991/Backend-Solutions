@@ -9,8 +9,6 @@ trigger:
 variables:
   buildConfiguration: 'Release'
 
-environment: DEV
-
 jobs:
 - job: "Build on Linux"
   continueOnError: false
