@@ -9,9 +9,11 @@ namespace Italo.Customer.Api.Mappers
     {
         public CustomerMapper()
         {
-            CreateMap<CustomerEntity, CustomerResponse>();
-            CreateMap<CustomerAddRequest, CustomerEntity>();
-            CreateMap<CustomerModifyRequest, CustomerEntity>();
+            CreateMap<Domain.Entities.Customer, CustomerResponse>();
+            CreateMap<Address, AddressResponse>();
+
+            CreateMap<CustomerRequest, Domain.Entities.Customer>();
+            CreateMap<AddressRequest, Address>();
         }
     }
 }

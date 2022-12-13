@@ -4,10 +4,10 @@ namespace Italo.Customer.Application.Interfaces
 {
     public interface ICustomerAppService
     {
-        Task<CustomerEntity?> GetByIdAsync(int id);
-        Task<bool> AddAsync(CustomerEntity customer);
-        void Modify(int id, CustomerEntity customer);
-        void Delete(CustomerEntity customerEntity);
+        Task<Domain.Entities.Customer?> GetByIdAsync(int id);
+        Task<bool> AddAsync(Domain.Entities.Customer customer);
+        void Modify(int id, Domain.Entities.Customer customer);
+        void Delete(Domain.Entities.Customer customerEntity);
         Task<bool> AlreadyExists(int id);
     }
 }

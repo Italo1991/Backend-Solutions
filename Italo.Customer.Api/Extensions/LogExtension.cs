@@ -6,7 +6,7 @@ namespace Italo.Customer.Api.Extensions
 {
     internal static class LogExtension
     {
-        internal static void AddLogExtensions(this WebApplicationBuilder builder)
+        internal static void AddLogExtension(this WebApplicationBuilder builder)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)

@@ -7,7 +7,7 @@ namespace Italo.Customer.Api.Extensions
 {
     internal static class AuthenticationExtension
     {
-        internal static void AddAuthenticationJwt(this WebApplicationBuilder builder)
+        internal static void AddAuthenticationJwtExtension(this WebApplicationBuilder builder)
         {
             builder.Services.Configure<SecuritySetting>(builder.Configuration.GetSection("Jwt"));
 

@@ -60,9 +60,9 @@ namespace Italo.Customer.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> AddAsync([FromBody] CustomerAddRequest customerRequest)
+        public async Task<ActionResult> AddAsync([FromBody] CustomerRequest customerRequest)
         {
-            var customerEntity = _mapper.Map<CustomerEntity>(customerRequest);
+            var customerEntity = _mapper.Map<Domain.Entities.Customer>(customerRequest);
             var success = await _customerAppService.AddAsync(customerEntity);
             if (success) return Ok();
 
@@ -83,12 +83,12 @@ namespace Italo.Customer.Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> ModifyAsync([FromRoute] int id, [FromBody] CustomerModifyRequest customerModifyRequest)
+        public async Task<ActionResult> ModifyAsync([FromRoute] int id, [FromBody] CustomerRequest customerModifyRequest)
         {
             var exists = await _customerAppService.AlreadyExists(id);
             if (!exists) return NotFound();
 
-            var customerEntity = _mapper.Map<CustomerEntity>(customerModifyRequest);
+            var customerEntity = _mapper.Map<Domain.Entities.Customer>(customerModifyRequest);
             _customerAppService.Modify(id, customerEntity);
             return Ok();
         }

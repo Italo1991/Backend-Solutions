@@ -1,11 +1,18 @@
-﻿using Italo.Customer.Domain.Entities;
-using Italo.Customer.Domain.Interfaces.Repositories;
+﻿using Italo.Customer.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Italo.Customer.Persistence.Repositories
 {
-    public class CustomerRepository : RepositoryBase<CustomerEntity>, IRepositoryBase<CustomerEntity>, ICustomerRepository
+    public class CustomerRepository : RepositoryBase<Domain.Entities.Customer>, IRepositoryBase<Domain.Entities.Customer>, ICustomerRepository
     {
         public CustomerRepository(CustomerContext customerContext) 
             : base(customerContext) { }
+
+        public override async Task<Domain.Entities.Customer?> GetByIdAsync(int id)
+            => await _customerContext
+                    .Set<Domain.Entities.Customer>()
+                    .Where(p => p.Id == id)
+                    .Include(p => p.Address)
+                    .FirstOrDefaultAsync();
     }
 }

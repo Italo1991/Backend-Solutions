@@ -12,5 +12,6 @@ namespace Italo.Customer.Api.Responses
         public DateTime? ModificationDate { get; set; }
         public string CreatedBy { get; set; }
         public string ModifiedBy { get; set; }
+        public AddressResponse Address { get; set; }
     }
 }

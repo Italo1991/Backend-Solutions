@@ -7,13 +7,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.AddDatabase();
-builder.AddAuthenticationJwt();
-builder.AddLogExtensions();
-builder.AddSwagger();
-builder.AddApplicationServices();
-builder.AddRepositories();
-builder.AddInfrastructure();
+builder.AddDatabaseExtension();
+builder.AddAuthenticationJwtExtension();
+builder.AddLogExtension();
+builder.AddSwaggerExtension();
+builder.AddApplicationServicesExtension();
+builder.AddRepositoriesExtension();
+builder.AddInfrastructureExtension();
 
 var app = builder.Build();
 

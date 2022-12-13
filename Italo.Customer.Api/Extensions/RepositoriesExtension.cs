@@ -6,7 +6,7 @@ namespace Italo.Customer.Api.Extensions
 {
     public static class RepositoriesExtension
     {
-        public static void AddRepositories(this WebApplicationBuilder builder)
+        public static void AddRepositoriesExtension(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

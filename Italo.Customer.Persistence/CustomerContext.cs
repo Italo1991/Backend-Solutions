@@ -9,7 +9,8 @@ namespace Italo.Customer.Persistence
     {
         private readonly IUserContext _userContext;
 
-        public DbSet<CustomerEntity> CustomerEntities { get; set; }
+        public DbSet<Domain.Entities.Customer> CustomerEntities { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         public CustomerContext(DbContextOptions<CustomerContext> options,
             IUserContext userContext) : base(options)
@@ -44,6 +45,7 @@ namespace Italo.Customer.Persistence
             modelBuilder.HasDefaultSchema("corporate");
 
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
             base.OnModelCreating(modelBuilder); 
         }
     }

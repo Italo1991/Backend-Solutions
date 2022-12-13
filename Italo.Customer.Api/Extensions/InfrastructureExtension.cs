@@ -5,7 +5,7 @@ namespace Italo.Customer.Api.Extensions
 {
     public static class InfrastructureExtension
     {
-        public static void AddInfrastructure(this WebApplicationBuilder builder)
+        public static void AddInfrastructureExtension(this WebApplicationBuilder builder)
         {
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IUserContext, UserContext>();

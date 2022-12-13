@@ -7,7 +7,7 @@ namespace Italo.Customer.Api.Extensions
 {
     internal static class SwaggerExtension
     {
-        internal static void AddSwagger(this WebApplicationBuilder builder)
+        internal static void AddSwaggerExtension(this WebApplicationBuilder builder)
         {
             var swaggerSetting = builder.Configuration.GetSection("SwaggerSetting").Get<SwaggerSetting>();
 

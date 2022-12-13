@@ -5,7 +5,7 @@ namespace Italo.Customer.Api.Extensions
 {
     public static class ApplicationServicesExtension
     {
-        public static void AddApplicationServices(this WebApplicationBuilder builder)
+        public static void AddApplicationServicesExtension(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<ICustomerAppService, CustomerAppService>();
         }

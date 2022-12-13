@@ -2,7 +2,7 @@
 
 namespace Italo.Customer.Domain.Interfaces.Repositories
 {
-    public interface ICustomerRepository : IRepositoryBase<CustomerEntity>
+    public interface ICustomerRepository : IRepositoryBase<Entities.Customer>
     {
         
     }

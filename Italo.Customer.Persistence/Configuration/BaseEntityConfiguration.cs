@@ -8,13 +8,6 @@ namespace Italo.Customer.Persistence.Configuration
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            builder.HasKey(p => p.Id)
-               .HasName("id");
-
-            builder.Property(p => p.Id)
-                .HasColumnName("id")
-                .IsRequired();
-
             builder.Property(p => p.ModificationDate)
                 .HasColumnName("modification_date");
 
