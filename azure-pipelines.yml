@@ -10,7 +10,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
-- job: "Build on Linux"
+- job: BuildLinux
   continueOnError: false
   timeoutInMinutes: 5
   pool:
@@ -21,7 +21,7 @@ jobs:
 
   - script: dotnet test --configuration $(buildConfiguration)
     displayName: 'dotnet test $(buildConfiguration)'
-- job: "Build on Windows"
+- job: BuildWindows
   continueOnError: false
   timeoutInMinutes: 5
   pool:
