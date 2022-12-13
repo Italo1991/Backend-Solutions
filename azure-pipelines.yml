@@ -27,14 +27,3 @@ jobs:
 
   - script: dotnet test --configuration $(buildConfiguration)
     displayName: 'dotnet test $(buildConfiguration)'
-# - job: BuildWindows
-#   continueOnError: false
-#   timeoutInMinutes: 5
-#   pool:
-#     vmImage: windows-latest
-#   steps:
-#   - script: dotnet build --configuration $(buildConfiguration)
-#     displayName: 'dotnet build $(buildConfiguration)'
-
-#   - script: dotnet test --configuration $(buildConfiguration)
-#     displayName: 'dotnet test $(buildConfiguration)'
