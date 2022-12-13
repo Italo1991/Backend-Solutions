@@ -10,7 +10,5 @@
         public string City { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-        public DateTime CreationDate { get; set; }
-        public string CreatedBy { get; set; }
     }
 }

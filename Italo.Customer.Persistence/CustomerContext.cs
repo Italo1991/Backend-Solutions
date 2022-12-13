@@ -30,11 +30,17 @@ namespace Italo.Customer.Persistence
                 {
                     ((EntityBase)entry.Entity).ModificationDate = DateTime.Now;
                     ((EntityBase)entry.Entity).ModifiedBy = userName;
+
+                    entry.Property(nameof(EntityBase.CreationDate)).IsModified = false;
+                    entry.Property(nameof(EntityBase.CreatedBy)).IsModified = false;
                 }
                 else if (entry.State == EntityState.Added)
                 {
                     ((EntityBase)entry.Entity).CreationDate = DateTime.Now;
                     ((EntityBase)entry.Entity).CreatedBy = userName;
+
+                    entry.Property(nameof(EntityBase.ModificationDate)).IsModified = false;
+                    entry.Property(nameof(EntityBase.ModifiedBy)).IsModified = false;
                 }
             }
             return base.SaveChanges();
