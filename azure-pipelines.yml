@@ -34,29 +34,29 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   
   steps:
-  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-    displayName: 'pool vm-image'
+  # - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+  #   displayName: 'pool vm-image'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'build'
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)'
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'build'
+  #   inputs:
+  #     command: 'build'
+  #     projects: '**/*.csproj'
+  #     arguments: '--configuration $(buildConfiguration)'
 
-  - ${{ if eq(parameters.runTests, true) }}:
-    - task: DotNetCoreCLI@2
-      displayName: 'test'
-      inputs:
-        command: 'test'
-        projects: '**/*Tests/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
+  # - ${{ if eq(parameters.runTests, true) }}:
+  #   - task: DotNetCoreCLI@2
+  #     displayName: 'test'
+  #     inputs:
+  #       command: 'test'
+  #       projects: '**/*Tests/*.csproj'
+  #       arguments: '--configuration $(buildConfiguration)'
   - task: Docker@2
     displayName: Build an image
     inputs:
       repository: $(imageName)
       command: build
-      Dockerfile: app/Dockerfile
+      Dockerfile: Dockerfile
 
 # - job: Publish
 #   dependsOn:
