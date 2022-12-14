@@ -20,7 +20,7 @@ parameters:
 - name: runTests
   displayName: Run Tests
   type: boolean
-  default: false
+  default: true
 
 jobs:
 # - deployment: DeployAPI
@@ -48,6 +48,12 @@ jobs:
       displayName: 'test'
       inputs:
         command: 'test'
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'XUnit'
+        testResultsFiles: '**/TEST-*.xml'
 
 - job: Publish
   dependsOn:
