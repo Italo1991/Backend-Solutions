@@ -67,5 +67,11 @@ stages:
         repository: '$(imageRepository)'
         command: 'push'
         tags: 'latest'
-  
+
+- stage: "Dev"
+  jobs:
+    - job: Teste
+      steps:
+      - script: echo teste
+
 
