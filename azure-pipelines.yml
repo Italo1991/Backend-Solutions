@@ -23,9 +23,8 @@ parameters:
   default: true
 
 jobs:
-- deployment: DeployBackendSolutions
-  displayName: "Name of Job"
-  environment: 'Deploy-Backend-Solutions-dev'
+- deployment: DeployAPI
+  environment: 'customer-api-dev'
 - job: Build
   displayName: Build and Test
   continueOnError: false
