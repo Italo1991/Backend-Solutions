@@ -9,7 +9,6 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   imageName: 'pipelines-italo-customer-docker'
-  containerRegistry: 'DockerHub-Italo'
   imageRepository: 'italoduarte1991/italo-customer-api'
 
 parameters:
@@ -41,7 +40,7 @@ stages:
           command: 'test'
           projects: '**/*Tests/*.csproj'
           arguments: '--configuration $(buildConfiguration)'
-
+      
   - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
     displayName: Build and Publish Docker Image
@@ -55,25 +54,14 @@ stages:
       displayName: 'Pool vm-image'
 
     - task: Docker@2
-      name: build
+      name: buildAndPush
+      displayName: Build and Push Image
       condition: succeeded()
-      displayName: Build Docker Image
       inputs:
-        containerRegistry: '$(containerRegistry)'
+        containerRegistry: 'ACR-Docker-Azure'
         repository: '$(imageRepository)'
-        command: 'build'
+        command: 'buildAndPush'
         Dockerfile: 'Dockerfile'
-        tags: 'latest'
-      
-    - task: Docker@2
-      name: push
-      condition: succeeded()
-      displayName: Push Docker Image
-      inputs:
-        containerRegistry: '$(containerRegistry)'
-        repository: '$(imageRepository)'
-        command: 'push'
-        tags: 'latest'
 
 - stage: "DeployDevStage"
   displayName: "Deploy on Dev"
@@ -82,7 +70,11 @@ stages:
     - job: TesteDev
       displayName: Deploy on DEV
       steps:
-      - script: echo teste dsv
+      - task: AzureWebAppContainer@1
+        inputs:
+          azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
+          appName: 'italo-customer-api-dev'
+          containers: 'italocustomerapi.azurecr.io/italoduarte1991/italo-customer-api:$(Build.BuildId)'
 
 - stage: "DeployHMLStage"
   displayName: "Deploy on HML"
