@@ -9,6 +9,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   imageName: 'pipelines-italo-customer-docker'
+  containerRegistry: 'DockerHub-Italo'
+  imageRepository: 'italoduarte1991/italo-customer-api'
 
 parameters:
 - name: vmImage
@@ -21,45 +23,47 @@ parameters:
 - name: runTests
   displayName: Run Tests
   type: boolean
-  default: false
+  default: true
 
 jobs:
-# - deployment: DeployAPI
-#   environment: 'customer-api-dev'
 - job: Build
   displayName: Build and Test
   continueOnError: false
   timeoutInMinutes: 3
   pool:
     vmImage: ${{ parameters.vmImage }}
-  
   steps:
-  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-    displayName: 'pool vm-image'
 
-  - task: DotNetCoreCLI@2
-    displayName: Build dotnet
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)'
+  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+    displayName: 'Pool vm-image'
 
   - ${{ if eq(parameters.runTests, true) }}:
     - task: DotNetCoreCLI@2
-      displayName: 'Test dotnet'
+      displayName: 'Unit test'
       inputs:
         command: 'test'
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
 
-- job: Publish
-  dependsOn:
-  - Build
-  displayName: Build and Publish Docker
-  steps:
   - task: Docker@2
+    name: build
+    condition: succeeded()
+    displayName: Build image Docker
     inputs:
-      containerRegistry: 'DockerHub-Italo'
-      repository:  'italoduarte1991/italo-customer-api'
-      command: 'buildAndPush'
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageRepository)'
+      command: 'build'
       Dockerfile: 'Dockerfile'
+      tags: 'latest'
+    
+  - task: Docker@2
+    name: push
+    condition: succeeded()
+    displayName: Push image Docker
+    inputs:
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageRepository)'
+      command: 'push'
+      tags: 'latest'
+  
+
