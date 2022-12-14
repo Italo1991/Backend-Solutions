@@ -56,23 +56,30 @@ stages:
     - task: Docker@2
       name: build
       condition: succeeded()
-      displayName: Build image Docker
+      displayName: Build Docker Image
       inputs:
         containerRegistry: '$(containerRegistry)'
         repository: '$(imageRepository)'
         command: 'build'
         Dockerfile: 'Dockerfile'
         tags: 'latest'
-      
-    - task: Docker@2
-      name: push
-      condition: succeeded()
-      displayName: Push image Docker
-      inputs:
-        containerRegistry: '$(containerRegistry)'
-        repository: '$(imageRepository)'
-        command: 'push'
-        tags: 'latest'
+
+  - job: PushJob
+    displayName: Push Docker Image
+    continueOnError: false
+    timeoutInMinutes: 3
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    steps:
+      - task: Docker@2
+        name: push
+        condition: succeeded()
+        displayName: Push Docker Image
+        inputs:
+          containerRegistry: '$(containerRegistry)'
+          repository: '$(imageRepository)'
+          command: 'push'
+          tags: 'latest'
 
 - stage: "DeployDevStage"
   displayName: "Deploy on Dev"
