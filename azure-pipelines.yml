@@ -68,10 +68,22 @@ stages:
         command: 'push'
         tags: 'latest'
 
-- stage: "Dev"
+- stage: "DEV"
   jobs:
-    - job: Teste
+    - job: Teste-dev
       steps:
-      - script: echo teste
+      - script: echo teste dsv
+
+- stage: "HML"
+  jobs:
+    - job: Teste-hml
+      steps:
+      - script: echo teste hml
+
+- stage: "PRD"
+  jobs:
+    - job: Teste-prd
+      steps:
+      - script: echo teste prd
 
 
