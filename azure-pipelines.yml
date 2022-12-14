@@ -47,6 +47,7 @@ jobs:
 
   - task: Docker@2
     name: build
+    condition: succeeded()
     displayName: Build image Docker
     inputs:
       containerRegistry: '$(containerRegistry)'
@@ -57,6 +58,7 @@ jobs:
     
   - task: Docker@2
     name: push
+    condition: succeeded()
     displayName: Push image Docker
     inputs:
       containerRegistry: '$(containerRegistry)'
