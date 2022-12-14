@@ -40,11 +40,11 @@ stages:
         inputs:
           command: 'test'
           projects: '**/*Tests/*.csproj'
-          arguments: '--configuration $(buildConfiguration)'
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=TestOutputResults.xml”'
       - task: PublishTestResults@2
         inputs:
-          testResultsFormat: 'VSTest'
-          testResultsFiles: '**/*.trx'
+          testResultsFormat: 'XUnit'
+          testResultsFiles: 'Italo.Customer.Tests/TestResults/TestOutputResults.xml'
       
   - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
