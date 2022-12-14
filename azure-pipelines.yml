@@ -70,19 +70,22 @@ stages:
 
 - stage: "DEV"
   jobs:
-    - job: Teste-dev
+    - job: TesteDev
+      displayName: Deploy on DEV
       steps:
       - script: echo teste dsv
 
 - stage: "HML"
   jobs:
-    - job: Teste-hml
+    - job: TesteHml
+      displayName: Deploy on HML
       steps:
       - script: echo teste hml
 
 - stage: "PRD"
   jobs:
-    - job: Teste-prd
+    - job: TestePrd
+      displayName: Deploy on PRD
       steps:
       - script: echo teste prd
 
