@@ -9,26 +9,55 @@ trigger:
 variables:
   buildConfiguration: 'Release'
 
+parameters:
+- name: vmImage
+  displayName: Pool Image
+  type: string
+  default: ubuntu-latest
+  values:
+  - windows-latest
+  - ubuntu-latest
+- name: runTests
+  displayName: Run Tests
+  type: boolean
+  default: true
+
 jobs:
-- job: BuildLinux
+# - deployment: DeployAPI
+#   environment: 'customer-api-dev'
+- job: Build
+  displayName: Build and Test
   continueOnError: false
-  timeoutInMinutes: 5
+  timeoutInMinutes: 3
   pool:
-    vmImage: ubuntu-latest
+    vmImage: ${{ parameters.vmImage }}
+  
   steps:
-  - script: dotnet build --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
+  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+    displayName: 'pool vm-image'
 
-  - script: dotnet test --configuration $(buildConfiguration)
-    displayName: 'dotnet test $(buildConfiguration)'
-- job: BuildWindows
-  continueOnError: false
-  timeoutInMinutes: 5
-  pool:
-    vmImage: windows-latest
+  - task: DotNetCoreCLI@2
+    displayName: 'build'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - ${{ if eq(parameters.runTests, true) }}:
+    - task: DotNetCoreCLI@2
+      displayName: 'test'
+      inputs:
+        command: 'test'
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration)'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'XUnit'
+        testResultsFiles: '**/TEST-*.xml'
+
+- job: Publish
+  dependsOn:
+  - Build
+  displayName: Publish 
   steps:
-  - script: dotnet build --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
-
-  - script: dotnet test --configuration $(buildConfiguration)
-    displayName: 'dotnet test $(buildConfiguration)'
+  - script: echo implementing
