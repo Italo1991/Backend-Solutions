@@ -23,14 +23,15 @@ parameters:
   default: false
 
 jobs:
-- deployment: DeployAPI
-  environment: 'customer-api-dev'
+# - deployment: DeployAPI
+#   environment: 'customer-api-dev'
 - job: Build
   displayName: Build and Test
   continueOnError: false
   timeoutInMinutes: 3
   pool:
     vmImage: ${{ parameters.vmImage }}
+  
   steps:
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
     displayName: 'pool vm-image'
@@ -46,18 +47,9 @@ jobs:
       inputs:
         command: 'test'
 
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'publish'
-      publishWebProjects: true
-
 - job: Publish
   dependsOn:
   - Build
   displayName: Publish 
   steps:
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'a'
-      publishLocation: 'Container'
+  - script: echo implementing
