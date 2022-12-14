@@ -67,6 +67,8 @@ stages:
   displayName: "Deploy on Dev"
   dependsOn: BuildStage
   jobs:
+    - deployment: dev
+      environment: italo-customer-api-dev
     - job: TesteDev
       displayName: Deploy on DEV
       steps:
@@ -80,6 +82,8 @@ stages:
   displayName: "Deploy on HML"
   dependsOn: DeployDevStage
   jobs:
+    - deployment: hml
+      environment: italo-customer-api-hml
     - job: TesteHml
       displayName: Deploy on HML
       steps:
@@ -89,6 +93,8 @@ stages:
   displayName: "Deploy on PRD"
   dependsOn: DeployHMLStage
   jobs:
+    - deployment: prd
+      environment: italo-customer-api-prd
     - job: TestePrd
       displayName: Deploy on PRD
       steps:
