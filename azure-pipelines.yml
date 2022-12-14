@@ -33,7 +33,7 @@ stages:
     continueOnError: false
     timeoutInMinutes: 3
     steps:
-      - ${{ if eq(parameters.runTests, true) }}:
+    - ${{ if eq(parameters.runTests, true) }}:
       - task: DotNetCoreCLI@2
         displayName: 'Unit test'
         inputs:
