@@ -40,7 +40,7 @@ stages:
         inputs:
           command: 'test'
           projects: '**/*Tests/*.csproj'
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=TestOutputResults.xml"'
+          arguments: '--configuration $(buildConfiguration) --logger \"trx;LogFileName=TestOutputResults.xml\"'
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'XUnit'
