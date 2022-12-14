@@ -40,8 +40,12 @@ stages:
         inputs:
           command: 'test'
           projects: '**/*Tests/*.csproj'
-          arguments: '--configuration $(buildConfiguration)'
-
+          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=TestOutputResults.xml"'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'XUnit'
+          testResultsFiles: '**/TEST-*.xml'
+      
   - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
     displayName: Build and Publish Docker Image
