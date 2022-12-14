@@ -52,15 +52,18 @@ jobs:
       repository: 'italoduarte1991/italo-customer-api'
       command: 'build'
       Dockerfile: 'Dockerfile'
+      tags: 'latest'
 
 - job: Publish
   dependsOn:
   - Build
   displayName: Publish Docker
   steps:
+
   - task: Docker@2
     inputs:
       containerRegistry: 'DockerHub-Italo'
       repository: 'italoduarte1991/italo-customer-api'
       command: 'push'
+      tags: 'latest'
 
