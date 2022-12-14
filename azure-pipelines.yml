@@ -54,6 +54,13 @@ stages:
       displayName: 'Pool vm-image'
 
     - task: Docker@2
+      inputs:
+        containerRegistry: 'ACR-Docker-Azure'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+
+    - task: Docker@2
       name: build
       condition: succeeded()
       displayName: Build Docker Image
