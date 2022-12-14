@@ -54,32 +54,14 @@ stages:
       displayName: 'Pool vm-image'
 
     - task: Docker@2
+      name: buildAndPush
+      displayName: Build and Push Image
+      condition: succeeded()
       inputs:
         containerRegistry: 'ACR-Docker-Azure'
         repository: '$(imageRepository)'
         command: 'buildAndPush'
         Dockerfile: 'Dockerfile'
-
-    - task: Docker@2
-      name: build
-      condition: succeeded()
-      displayName: Build Docker Image
-      inputs:
-        containerRegistry: 'ACR-Docker-Hub'
-        repository: '$(imageRepository)'
-        command: 'build'
-        Dockerfile: 'Dockerfile'
-        tags: 'latest'
-      
-    - task: Docker@2
-      name: push
-      condition: succeeded()
-      displayName: Push Docker Image
-      inputs:
-        containerRegistry: 'ACR-Docker-Azure'
-        repository: '$(imageRepository)'
-        command: 'push'
-        tags: 'latest'
 
 - stage: "DeployDevStage"
   displayName: "Deploy on Dev"
