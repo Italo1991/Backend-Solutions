@@ -23,7 +23,7 @@ parameters:
   default: true
 
 jobs:
-- deployment: 'Deploy-Backend-Solutions'
+- deployment: DeployBackendSolutions
   displayName: "Name of Job"
   environment: 'Deploy-Backend-Solutions-dev'
 - job: Build
