@@ -26,10 +26,23 @@ parameters:
   default: true
 
 stages:
-- stage: "Build"
+- stage: BuildStage
   jobs:
-  - job: Build
-    displayName: Build and Test
+  - job: TestJob
+    displayName: Unit Testing
+    continueOnError: false
+    timeoutInMinutes: 3
+    steps:
+      - ${{ if eq(parameters.runTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: 'Unit test'
+        inputs:
+          command: 'test'
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+
+  - job: BuildJob
+    displayName: Build
     continueOnError: false
     timeoutInMinutes: 3
     pool:
@@ -38,14 +51,6 @@ stages:
 
     - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
       displayName: 'Pool vm-image'
-
-    - ${{ if eq(parameters.runTests, true) }}:
-      - task: DotNetCoreCLI@2
-        displayName: 'Unit test'
-        inputs:
-          command: 'test'
-          projects: '**/*Tests/*.csproj'
-          arguments: '--configuration $(buildConfiguration)'
 
     - task: Docker@2
       name: build
@@ -68,25 +73,28 @@ stages:
         command: 'push'
         tags: 'latest'
 
-- stage: "DEV"
+- stage: "DeployDevStage"
+  displayName: "Deploy on Dev"
+  dependsOn: BuildStage
   jobs:
     - job: TesteDev
       displayName: Deploy on DEV
       steps:
       - script: echo teste dsv
 
-- stage: "HML"
+- stage: "DeployHMLStage"
+  displayName: "Deploy on HML"
+  dependsOn: BuildStage
   jobs:
     - job: TesteHml
       displayName: Deploy on HML
       steps:
       - script: echo teste hml
 
-- stage: "PRD"
+- stage: "DeployPRDStage"
+  displayName: "Deploy on PRD"
   jobs:
     - job: TestePrd
       displayName: Deploy on PRD
       steps:
       - script: echo teste prd
-
-
