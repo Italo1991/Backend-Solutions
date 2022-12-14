@@ -33,7 +33,7 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   steps:
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-    displayName: 'Pool-VmImage'
+    displayName: 'pool vm-image'
 
   - script: dotnet restore
     displayName: 'dotnet restore'
@@ -45,10 +45,12 @@ jobs:
     - script: dotnet test --configuration $(buildConfiguration)
       displayName: 'dotnet test $(buildConfiguration)'
 - job: Publish
+  dependsOn:
+  - Build
   displayName: Publish 
   steps:
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
+      targetPath: '$(Pipeline.Workspace)'
+      ArtifactName: 'customer-api'
+      artifactType: 'Container'
