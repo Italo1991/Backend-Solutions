@@ -25,45 +25,79 @@ parameters:
   type: boolean
   default: true
 
-jobs:
-- job: Build
-  displayName: Build and Test
-  continueOnError: false
-  timeoutInMinutes: 3
-  pool:
-    vmImage: ${{ parameters.vmImage }}
-  steps:
+stages:
+- stage: BuildStage
+  displayName: Build
+  jobs:
+  - job: UnitTestingJob
+    displayName: Unit Testing
+    continueOnError: false
+    timeoutInMinutes: 3
+    steps:
+    - ${{ if eq(parameters.runTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: 'Unit test'
+        inputs:
+          command: 'test'
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
 
-  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-    displayName: 'Pool vm-image'
+  - job: BuildAndPublishJob
+    dependsOn: UnitTestingJob
+    displayName: Build and Publish Docker Image
+    continueOnError: false
+    timeoutInMinutes: 3
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    steps:
 
-  - ${{ if eq(parameters.runTests, true) }}:
-    - task: DotNetCoreCLI@2
-      displayName: 'Unit test'
+    - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+      displayName: 'Pool vm-image'
+
+    - task: Docker@2
+      name: build
+      condition: succeeded()
+      displayName: Build Docker Image
       inputs:
-        command: 'test'
-        projects: '**/*Tests/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
+        containerRegistry: '$(containerRegistry)'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: 'Dockerfile'
+        tags: 'latest'
+      
+    - task: Docker@2
+      name: push
+      condition: succeeded()
+      displayName: Push Docker Image
+      inputs:
+        containerRegistry: '$(containerRegistry)'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: 'latest'
 
-  - task: Docker@2
-    name: build
-    condition: succeeded()
-    displayName: Build image Docker
-    inputs:
-      containerRegistry: '$(containerRegistry)'
-      repository: '$(imageRepository)'
-      command: 'build'
-      Dockerfile: 'Dockerfile'
-      tags: 'latest'
-    
-  - task: Docker@2
-    name: push
-    condition: succeeded()
-    displayName: Push image Docker
-    inputs:
-      containerRegistry: '$(containerRegistry)'
-      repository: '$(imageRepository)'
-      command: 'push'
-      tags: 'latest'
-  
+- stage: "DeployDevStage"
+  displayName: "Deploy on Dev"
+  dependsOn: BuildStage
+  jobs:
+    - job: TesteDev
+      displayName: Deploy on DEV
+      steps:
+      - script: echo teste dsv
 
+- stage: "DeployHMLStage"
+  displayName: "Deploy on HML"
+  dependsOn: DeployDevStage
+  jobs:
+    - job: TesteHml
+      displayName: Deploy on HML
+      steps:
+      - script: echo teste hml
+
+- stage: "DeployPRDStage"
+  displayName: "Deploy on PRD"
+  dependsOn: DeployHMLStage
+  jobs:
+    - job: TestePrd
+      displayName: Deploy on PRD
+      steps:
+      - script: echo teste prd
