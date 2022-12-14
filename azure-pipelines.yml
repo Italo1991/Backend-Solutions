@@ -44,7 +44,7 @@ stages:
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'XUnit'
-          testResultsFiles: 'Italo.Customer.Tests/TestResults/TestOutputResults.xml'
+          testResultsFiles: '**/TestOutputResults.xml'
       
   - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
