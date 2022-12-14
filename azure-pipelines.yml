@@ -102,4 +102,8 @@ stages:
     - job: TestePrd
       displayName: Deploy on PRD
       steps:
-      - script: echo teste prd
+      - task: AzureWebAppContainer@1
+        inputs:
+          azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
+          appName: 'italo-customer-api-prd'
+          containers: 'italocustomerapi.azurecr.io/italoduarte1991/italo-customer-api:$(Build.BuildId)'
