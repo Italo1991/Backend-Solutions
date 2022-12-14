@@ -20,7 +20,7 @@ parameters:
 - name: runTests
   displayName: Run Tests
   type: boolean
-  default: true
+  default: false
 
 jobs:
 - deployment: DeployAPI
@@ -28,7 +28,7 @@ jobs:
 - job: Build
   displayName: Build and Test
   continueOnError: false
-  timeoutInMinutes: 5
+  timeoutInMinutes: 3
   pool:
     vmImage: ${{ parameters.vmImage }}
   steps:
@@ -45,13 +45,11 @@ jobs:
       displayName: 'test'
       inputs:
         command: 'test'
-      
+
   - task: DotNetCoreCLI@2
-    displayName: 'pack'
     inputs:
-      command: 'pack'
-      packagesToPack: '**/*.csproj'
-      versioningScheme: 'off'
+      command: 'publish'
+      publishWebProjects: true
 
 - job: Publish
   dependsOn:
