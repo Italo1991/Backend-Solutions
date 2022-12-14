@@ -42,9 +42,9 @@ stages:
           projects: '**/*Tests/*.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
-  - job: BuildJob
+  - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
-    displayName: Build Docker Image
+    displayName: Build and Publish Docker Image
     continueOnError: false
     timeoutInMinutes: 3
     pool:
