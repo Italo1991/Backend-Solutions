@@ -34,7 +34,7 @@ jobs:
   steps:
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
     displayName: 'pool vm-image'
-    
+
   - task: DotNetCoreCLI@2
     displayName: 'build'
     inputs:
@@ -45,6 +45,7 @@ jobs:
       displayName: 'test'
       inputs:
         command: 'test'
+      
   - task: DotNetCoreCLI@2
     displayName: 'pack'
     inputs:
@@ -60,5 +61,5 @@ jobs:
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
+      ArtifactName: 'a'
       publishLocation: 'Container'
