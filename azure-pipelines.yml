@@ -43,8 +43,8 @@ stages:
           arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=TestOutputResults.xml”'
       - task: PublishTestResults@2
         inputs:
-          testResultsFormat: 'XUnit'
-          testResultsFiles: '**/TestOutputResults.xml'
+          testResultsFormat: 'VSTest'
+          testResultsFiles: '**/TEST*.xml'
       
   - job: BuildAndPublishJob
     dependsOn: UnitTestingJob
