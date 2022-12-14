@@ -28,11 +28,11 @@ namespace Italo.Customer.Api.Controllers
         /// <summary>
         /// Endpoint to return customer by id
         /// </summary>
-        /// <param name="id" example="1">Customer's id</param>
+        /// <param name="id" example="1">Customer's Id</param>
         /// <returns>Customer</returns>
         /// <response code="200">Customer</response>
         /// <response code="404">Customer not found</response>
-        /// <response code="500">Error to get by id</response>
+        /// <response code="500">Error to get by Id</response>
         [HttpGet("{id:int}")]
         [Produces("application/json")]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
