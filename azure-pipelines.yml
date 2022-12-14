@@ -56,7 +56,7 @@ jobs:
     inputs:
       repository: $(imageName)
       command: build
-      Dockerfile: app/Dockerfile
+      Dockerfile: Italo.Customer.Api/Dockerfile
 
 # - job: Publish
 #   dependsOn:
