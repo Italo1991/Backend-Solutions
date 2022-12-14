@@ -9,7 +9,6 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   imageName: 'pipelines-italo-customer-docker'
-  containerRegistry: 'DockerHub-Italo'
   imageRepository: 'italoduarte1991/italo-customer-api'
 
 parameters:
@@ -59,7 +58,7 @@ stages:
       condition: succeeded()
       displayName: Build Docker Image
       inputs:
-        containerRegistry: '$(containerRegistry)'
+        containerRegistry: 'ACR-Docker-Hub'
         repository: '$(imageRepository)'
         command: 'build'
         Dockerfile: 'Dockerfile'
