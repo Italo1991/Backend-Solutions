@@ -63,7 +63,7 @@ jobs:
   - task: Docker@2
     inputs:
       containerRegistry: 'DockerHub-Italo'
-      repository: 'italoduarte1991/italo-customer-api'
+      repository: 'italoduarte1991/italo-customer-api:latest'
       command: 'push'
       tags: 'latest'
 
