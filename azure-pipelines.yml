@@ -67,6 +67,8 @@ stages:
   displayName: "Deploy on Dev"
   dependsOn: BuildStage
   jobs:
+    - deployment: dev
+      environment: italo-customer-api-dev
     - job: TesteDev
       displayName: Deploy on DEV
       steps:
@@ -80,16 +82,28 @@ stages:
   displayName: "Deploy on HML"
   dependsOn: DeployDevStage
   jobs:
+    - deployment: hml
+      environment: italo-customer-api-hml
     - job: TesteHml
       displayName: Deploy on HML
       steps:
-      - script: echo teste hml
+      - task: AzureWebAppContainer@1
+        inputs:
+          azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
+          appName: 'italo-customer-api-hml'
+          containers: 'italocustomerapi.azurecr.io/italoduarte1991/italo-customer-api:$(Build.BuildId)'
 
 - stage: "DeployPRDStage"
   displayName: "Deploy on PRD"
   dependsOn: DeployHMLStage
   jobs:
+    - deployment: prd
+      environment: italo-customer-api-prd
     - job: TestePrd
       displayName: Deploy on PRD
       steps:
-      - script: echo teste prd
+      - task: AzureWebAppContainer@1
+        inputs:
+          azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
+          appName: 'italo-customer-api-prd'
+          containers: 'italocustomerapi.azurecr.io/italoduarte1991/italo-customer-api:$(Build.BuildId)'
