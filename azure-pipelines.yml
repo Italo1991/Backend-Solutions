@@ -37,13 +37,6 @@ jobs:
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
     displayName: 'pool vm-image'
 
-  - task: DotNetCoreCLI@2
-    displayName: Build dotnet
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)'
-
   - ${{ if eq(parameters.runTests, true) }}:
     - task: DotNetCoreCLI@2
       displayName: 'Test dotnet'
@@ -52,14 +45,22 @@ jobs:
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
 
+  - task: Docker@2
+    displayName: Build docker
+    inputs:
+      containerRegistry: 'DockerHub-Italo'
+      repository: 'italoduarte1991/italo-customer-api'
+      command: 'build'
+      Dockerfile: 'Dockerfile'
+
 - job: Publish
   dependsOn:
   - Build
-  displayName: Build and Publish Docker
+  displayName: Publish Docker
   steps:
   - task: Docker@2
     inputs:
       containerRegistry: 'DockerHub-Italo'
-      repository:  'italoduarte1991/italo-customer-api'
-      command: 'buildAndPush'
-      Dockerfile: 'Dockerfile'
+      repository: 'italoduarte1991/italo-customer-api'
+      command: 'push'
+
