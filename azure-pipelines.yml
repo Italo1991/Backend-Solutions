@@ -38,7 +38,7 @@ jobs:
     displayName: 'pool vm-image'
 
   - task: DotNetCoreCLI@2
-    displayName: 'build'
+    displayName: Build dotnet
     inputs:
       command: 'build'
       projects: '**/*.csproj'
@@ -46,31 +46,20 @@ jobs:
 
   - ${{ if eq(parameters.runTests, true) }}:
     - task: DotNetCoreCLI@2
-      displayName: 'test'
+      displayName: 'Test dotnet'
       inputs:
         command: 'test'
         projects: '**/*Tests/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
+
+- job: Publish
+  dependsOn:
+  - Build
+  displayName: Build and Publish Docker
+  steps:
   - task: Docker@2
-    displayName: Build an image
     inputs:
-      repository: $(imageName)
-      command: build
-      Dockerfile: Italo.Customer.Api/Dockerfile
-
-# - job: Publish
-#   dependsOn:
-#   - Build
-#   displayName: Publish 
-#   steps:
-#   - task: DotNetCoreCLI@2
-#     inputs:
-#       command: publish
-#       publishWebProjects: True
-#       arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-#       zipAfterPublish: True
-
-#   - task: PublishPipelineArtifact@1
-#     inputs:
-#       targetPath: '$(Build.ArtifactStagingDirectory)' 
-#       artifactName: 'myWebsiteName'
+      containerRegistry: 'DockerHub-Italo'
+      repository:  'italoduarte1991/italo-customer-api'
+      command: 'buildAndPush'
+      Dockerfile: 'Dockerfile'
