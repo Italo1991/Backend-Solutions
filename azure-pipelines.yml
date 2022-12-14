@@ -48,13 +48,11 @@ jobs:
   #   - task: DotNetCoreCLI@2
   #     displayName: 'test'
   #     inputs:
-  #       command: 'test'
-  #       projects: '**/*Tests/*.csproj'
-  #       arguments: '--configuration $(buildConfiguration)'
+
   - task: Docker@2
     inputs:
       containerRegistry: 'DockerHub-Italo'
-      repository: 'italo-customer-api'
+      repository:  'italoduarte1991/italo-customer-api'
       command: 'buildAndPush'
       Dockerfile: 'Dockerfile'
 
