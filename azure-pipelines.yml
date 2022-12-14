@@ -40,6 +40,8 @@ jobs:
     displayName: 'build'
     inputs:
       command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
 
   - ${{ if eq(parameters.runTests, true) }}:
     - task: DotNetCoreCLI@2
