@@ -87,7 +87,11 @@ stages:
     - job: TesteHml
       displayName: Deploy on HML
       steps:
-      - script: echo teste hml
+      - task: AzureWebAppContainer@1
+        inputs:
+          azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
+          appName: 'italo-customer-api-hml'
+          containers: 'italocustomerapi.azurecr.io/italoduarte1991/italo-customer-api:$(Build.BuildId)'
 
 - stage: "DeployPRDStage"
   displayName: "Deploy on PRD"
