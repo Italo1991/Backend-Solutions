@@ -23,6 +23,7 @@ parameters:
   default: true
 
 jobs:
+- deployment: Deploy-Backend-Solutions
 - job: Build
   displayName: Build and Test
   continueOnError: false
