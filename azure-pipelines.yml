@@ -74,7 +74,7 @@ stages:
         inputs:
           azureSubscription: 'Avaliação Gratuita(1)(02d27a1f-1454-4c94-a0ed-7184ccfcd555)'
           appName: 'italo-customer-api-dev'
-          containers: 'italoduarte1991/italo-customer-api:102'
+          containers: 'italoduarte1991/italo-customer-api:$(Build.BuildId)'
 
 - stage: "DeployHMLStage"
   displayName: "Deploy on HML"
