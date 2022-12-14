@@ -32,8 +32,8 @@ jobs:
   timeoutInMinutes: 3
   pool:
     vmImage: ${{ parameters.vmImage }}
-  
   steps:
+  
   - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
     displayName: 'pool vm-image'
 
@@ -48,23 +48,17 @@ jobs:
   - task: Docker@2
     displayName: Build docker
     inputs:
-      containerRegistry: $(containerRegistry)
-      repository: $(imageRepository)
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageRepository)'
       command: 'build'
       Dockerfile: 'Dockerfile'
       tags: 'latest'
-
-- job: Publish
-  dependsOn:
-  - Build
-  displayName: Publish Docker
-  steps:
-
+    
   - task: Docker@2
     inputs:
       containerRegistry: '$(containerRegistry)'
       repository: '$(imageRepository)'
       command: 'push'
       tags: 'latest'
-      Dockerfile: 'Dockerfile'
+  
 
