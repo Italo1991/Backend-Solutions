@@ -52,11 +52,11 @@ jobs:
   #       projects: '**/*Tests/*.csproj'
   #       arguments: '--configuration $(buildConfiguration)'
   - task: Docker@2
-    displayName: Build an image
     inputs:
-      repository: $(imageName)
-      command: build
-      Dockerfile: Dockerfile
+      containerRegistry: 'DockerHub-Italo'
+      repository: 'italo-customer-api'
+      command: 'buildAndPush'
+      Dockerfile: 'Dockerfile'
 
 # - job: Publish
 #   dependsOn:
