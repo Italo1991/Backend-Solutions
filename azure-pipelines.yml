@@ -86,8 +86,7 @@ stages:
     - job: TesteDev
       displayName: Deploy on DEV
       steps:
-      - download: current
-        artifact: drop
+      - script: echo teste DEV
 
 - stage: "DeployHMLStage"
   displayName: "Deploy on HML"
