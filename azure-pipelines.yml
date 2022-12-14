@@ -25,45 +25,47 @@ parameters:
   type: boolean
   default: true
 
-jobs:
-- job: Build
-  displayName: Build and Test
-  continueOnError: false
-  timeoutInMinutes: 3
-  pool:
-    vmImage: ${{ parameters.vmImage }}
-  steps:
+stages:
+- stage: "Build"
+  jobs:
+  - job: Build
+    displayName: Build and Test
+    continueOnError: false
+    timeoutInMinutes: 3
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    steps:
 
-  - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
-    displayName: 'Pool vm-image'
+    - script: echo building $(Build.BuildNumber) with ${{ parameters.vmImage }}
+      displayName: 'Pool vm-image'
 
-  - ${{ if eq(parameters.runTests, true) }}:
-    - task: DotNetCoreCLI@2
-      displayName: 'Unit test'
+    - ${{ if eq(parameters.runTests, true) }}:
+      - task: DotNetCoreCLI@2
+        displayName: 'Unit test'
+        inputs:
+          command: 'test'
+          projects: '**/*Tests/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
+
+    - task: Docker@2
+      name: build
+      condition: succeeded()
+      displayName: Build image Docker
       inputs:
-        command: 'test'
-        projects: '**/*Tests/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
-
-  - task: Docker@2
-    name: build
-    condition: succeeded()
-    displayName: Build image Docker
-    inputs:
-      containerRegistry: '$(containerRegistry)'
-      repository: '$(imageRepository)'
-      command: 'build'
-      Dockerfile: 'Dockerfile'
-      tags: 'latest'
-    
-  - task: Docker@2
-    name: push
-    condition: succeeded()
-    displayName: Push image Docker
-    inputs:
-      containerRegistry: '$(containerRegistry)'
-      repository: '$(imageRepository)'
-      command: 'push'
-      tags: 'latest'
+        containerRegistry: '$(containerRegistry)'
+        repository: '$(imageRepository)'
+        command: 'build'
+        Dockerfile: 'Dockerfile'
+        tags: 'latest'
+      
+    - task: Docker@2
+      name: push
+      condition: succeeded()
+      displayName: Push image Docker
+      inputs:
+        containerRegistry: '$(containerRegistry)'
+        repository: '$(imageRepository)'
+        command: 'push'
+        tags: 'latest'
   
 
