@@ -19,7 +19,7 @@ namespace Italo.Customer.Tests
         public void Validate()
         {
             var number = 2;
-            number.Should().Be(2);
+            number.Should().Be(3);
         }
     }
 }
