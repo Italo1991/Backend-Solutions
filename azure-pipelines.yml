@@ -27,6 +27,7 @@ parameters:
 
 stages:
 - stage: BuildStage
+  displayName: Build
   jobs:
   - job: TestJob
     displayName: Unit Testing
