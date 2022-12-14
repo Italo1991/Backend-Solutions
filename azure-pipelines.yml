@@ -84,7 +84,7 @@ stages:
 
 - stage: "DeployHMLStage"
   displayName: "Deploy on HML"
-  dependsOn: BuildStage
+  dependsOn: DeployDevStage
   jobs:
     - job: TesteHml
       displayName: Deploy on HML
@@ -93,6 +93,7 @@ stages:
 
 - stage: "DeployPRDStage"
   displayName: "Deploy on PRD"
+  dependsOn: DeployHMLStage
   jobs:
     - job: TestePrd
       displayName: Deploy on PRD
