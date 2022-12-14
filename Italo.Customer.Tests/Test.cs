@@ -18,8 +18,8 @@ namespace Italo.Customer.Tests
         [Fact]
         public void Validate()
         {
-            var number = 1;
-            number.Should().Be(1);
+            var number = 2;
+            number.Should().Be(2);
         }
     }
 }
