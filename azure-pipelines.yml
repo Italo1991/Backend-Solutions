@@ -44,3 +44,11 @@ jobs:
   - ${{ if eq(parameters.runTests, true) }}:
     - script: dotnet test --configuration $(buildConfiguration)
       displayName: 'dotnet test $(buildConfiguration)'
+- job: Publish
+  displayName: Publish 
+  steps:
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
