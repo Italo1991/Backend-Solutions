@@ -62,8 +62,9 @@ jobs:
 
   - task: Docker@2
     inputs:
-      containerRegistry: $(containerRegistry)
-      repository: $(imageRepository)
+      containerRegistry: '$(containerRegistry)'
+      repository: '$(imageRepository)'
       command: 'push'
       tags: 'latest'
+      Dockerfile: 'Dockerfile'
 
